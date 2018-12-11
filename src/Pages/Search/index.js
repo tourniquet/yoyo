@@ -1,16 +1,17 @@
 import React from 'react'
 import fetch from 'node-fetch'
 import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
 
 // components
 import Button from '../../components/Button/'
 
 const mapStateToProps = state => ({
   query: state.searchReducer.query,
-  item: state.itemReducer.item
+  items: state.itemsReducer.items
 })
 
-const Search = ({ dispatch, query }) => {
+const Search = ({ dispatch, items, query }) => {
   const setQuery = el => ({
     type: 'SEARCH_QUERY',
     value: el.target.value
@@ -26,7 +27,7 @@ const Search = ({ dispatch, query }) => {
   }
 
   const setItem = data => ({
-    type: 'ASSIGN_ITEM_DATA',
+    type: 'FETCH_ITEMS',
     value: data
   })
 
@@ -43,6 +44,28 @@ const Search = ({ dispatch, query }) => {
       >
         Search
       </Button>
+
+      <ul>
+        { items &&
+          items.map(item => (
+            <li
+              key={item.id}
+            >
+              <h4>
+                <Link
+                  to={{ pathname: `/item/${item}` }}
+                >
+                  {item.title}
+                </Link>
+              </h4>
+
+              <p className='overview'>
+                {item.overview}
+              </p>
+            </li>
+          ))
+        }
+      </ul>
     </div>
   )
 }

@@ -2,16 +2,17 @@ import React from 'react'
 import { render } from 'react-dom'
 import { combineReducers, createStore } from 'redux'
 import { Provider } from 'react-redux'
+import { BrowserRouter, Route, Switch } from 'react-router-dom'
 
 // components
 import Search from './Pages/Search/'
 
 // reducers
-import itemReducer from './reducers/itemReducer'
+import itemsReducer from './reducers/itemsReducer'
 import searchReducer from './reducers/searchReducer'
 
 const combineReducer = combineReducers({
-  itemReducer,
+  itemsReducer,
   searchReducer
 })
 
@@ -22,12 +23,14 @@ const store = createStore(
 
 const App = () =>
   <Provider store={store}>
-    <div>
-      <Search />
-    </div>
+    <Switch>
+      <Route path='/' component={Search} />
+    </Switch>
   </Provider>
 
 render(
-  <App />,
+  <BrowserRouter>
+    <App />
+  </BrowserRouter>,
   document.querySelector('#container')
 )
