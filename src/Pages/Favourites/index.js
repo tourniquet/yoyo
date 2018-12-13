@@ -2,37 +2,40 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
 const mapStateToProps = state => ({
-  items: state.favouriteReducer.items
+  favourites: state.favouriteReducer.favourites
 })
 
 class Favourites extends Component {
   getFavouritesMoviesFromLocalStorage () {
     const favouriteMovies = JSON.parse(window.localStorage.getItem('favourites'))
 
-    if (!favouriteMovies) window.localStorage.setItem('some', JSON.stringify([]))
+    if (!favouriteMovies) window.localStorage.setItem('favourites', JSON.stringify([]))
 
     return {
-      action.type: ''
+      type: 'GET_FAVOURITE_MOVIES',
+      favouriteMovies
     }
-
-    console.log(favouriteMovies)
-    // const movie = {id, title}
-
-    // if (favouriteMovies.length) {
-    // favouriteMovies.push(movie)
-    // window.localStorage.setItem('favourites', JSON.stringify(favouriteMovies))
-    // }
   }
 
   componentDidMount () {
-    this.getFavouritesMoviesFromLocalStorage()
+    this.props.dispatch(this.getFavouritesMoviesFromLocalStorage())
   }
 
   render () {
     return (
-      <div>
-        Hello, world!
-      </div>
+      <ul>
+        { this.props.favourites &&
+          this.props.favourites.map(movie =>
+            <li key={movie.id}>
+              <a
+                href={`https://api.themoviedb.org/3/movie/${movie.id}?api_key=4cb1eeab94f45affe2536f2c684a5c9e`}
+              >
+                {movie.title}
+              </a>
+            </li>
+          )
+        }
+      </ul>
     )
   }
 }

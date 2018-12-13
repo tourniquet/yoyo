@@ -1,7 +1,6 @@
 import React from 'react'
 import fetch from 'node-fetch'
 import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
 // components
@@ -13,10 +12,10 @@ const StyledListItem = styled.li`
 
 const mapStateToProps = state => ({
   query: state.searchReducer.query,
-  items: state.itemsReducer.items
+  movies: state.itemsReducer.movies
 })
 
-const Search = ({ dispatch, items, query }) => {
+const Search = ({ dispatch, movies, query }) => {
   const setQuery = el => ({
     type: 'SEARCH_QUERY',
     value: el.target.value
@@ -36,13 +35,22 @@ const Search = ({ dispatch, items, query }) => {
     value: data
   })
 
-  const switchFavouriteStatus = (id, title) => {
+  const switchFavouriteStatus = movie => {
     const favouriteMovies = JSON.parse(window.localStorage.getItem('favourites')) || []
-    const movie = {id, title}
 
     if (favouriteMovies.length) {
-      favouriteMovies.push(movie)
-      window.localStorage.setItem('favourites', JSON.stringify(favouriteMovies))
+      const existingMovie = favouriteMovies.filter(item => item.id === movie.id)
+
+      if (!existingMovie.length) {
+        favouriteMovies.push(movie)
+        window.localStorage.setItem('favourites', JSON.stringify(favouriteMovies))
+      }
+
+      if (existingMovie.length) {
+        const newFavouriteMoviesList = favouriteMovies.filter(item => item.id !== existingMovie[0].id)
+        console.log(newFavouriteMoviesList)
+        window.localStorage.setItem('favourites', JSON.stringify(newFavouriteMoviesList))
+      }
     }
   }
 
@@ -62,22 +70,18 @@ const Search = ({ dispatch, items, query }) => {
       </Button>
 
       <ul>
-        { items &&
-          items.map(item => (
+        { movies &&
+          movies.map(movie => (
             <StyledListItem
-              key={item.id}
+              key={movie.id}
             >
               <Button
-                onClick={() => switchFavouriteStatus(item.id, item.title)}
+                onClick={() => switchFavouriteStatus(movie)}
               >
                 S
               </Button>
               <h4>
-                <Link
-                  to={{ pathname: `/item/${item}` }}
-                >
-                  {item.title}
-                </Link>
+                {movie.title}
               </h4>
             </StyledListItem>
           ))

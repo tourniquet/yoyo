@@ -1,17 +1,17 @@
 const initialState = {
-  items: ''
+  movies: ''
 }
 
 const itemsReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'FETCH_ITEMS':
       return Object.assign({}, state, {
-        items: action.value.results
+        movies: action.value.results
       })
     case 'SWITCH_FAVOURITE_STATUS':
       return Object.assign({}, state, {
-        items: state.items.map(item =>
-          (item.id === Number(action.id)) ? {...item, favourite: !item.favourite} : item
+        movies: state.movies.map(movie =>
+          (movie.id === Number(action.id)) ? {...movie, favourite: !movie.favourite} : movie
         )
       })
     default:
