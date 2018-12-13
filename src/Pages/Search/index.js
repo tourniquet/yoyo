@@ -2,9 +2,14 @@ import React from 'react'
 import fetch from 'node-fetch'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
+import styled from 'styled-components'
 
 // components
 import Button from '../../components/Button/'
+
+const StyledListItem = styled.li`
+  list-style-type: none;
+`
 
 const mapStateToProps = state => ({
   query: state.searchReducer.query,
@@ -31,12 +36,23 @@ const Search = ({ dispatch, items, query }) => {
     value: data
   })
 
+  const switchFavouriteStatus = (id, title) => {
+    const favouriteMovies = JSON.parse(window.localStorage.getItem('favourites')) || []
+    const movie = {id, title}
+
+    if (favouriteMovies.length) {
+      favouriteMovies.push(movie)
+      window.localStorage.setItem('favourites', JSON.stringify(favouriteMovies))
+    }
+  }
+
   return (
     <div>
       <input
-        type='text'
+        type='search'
         value={query}
         onChange={event => dispatch(setQuery(event))}
+        onKeyDown={event => (event.keyCode === 13 && event.target.value) ? requestData() : null}
       />
 
       <Button
@@ -48,9 +64,14 @@ const Search = ({ dispatch, items, query }) => {
       <ul>
         { items &&
           items.map(item => (
-            <li
+            <StyledListItem
               key={item.id}
             >
+              <Button
+                onClick={() => switchFavouriteStatus(item.id, item.title)}
+              >
+                S
+              </Button>
               <h4>
                 <Link
                   to={{ pathname: `/item/${item}` }}
@@ -58,11 +79,7 @@ const Search = ({ dispatch, items, query }) => {
                   {item.title}
                 </Link>
               </h4>
-
-              <p className='overview'>
-                {item.overview}
-              </p>
-            </li>
+            </StyledListItem>
           ))
         }
       </ul>
