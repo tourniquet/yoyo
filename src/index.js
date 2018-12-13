@@ -6,13 +6,16 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom'
 
 // components
 import Search from './Pages/Search/'
+import Favourites from './Pages/Favourites/'
 
 // reducers
 import itemsReducer from './reducers/itemsReducer'
+import favouriteReducer from './reducers/favouritesReducer'
 import searchReducer from './reducers/searchReducer'
 
 const combineReducer = combineReducers({
   itemsReducer,
+  favouriteReducer,
   searchReducer
 })
 
@@ -24,7 +27,8 @@ const store = createStore(
 const App = () =>
   <Provider store={store}>
     <Switch>
-      <Route path='/' component={Search} />
+      <Route path='/' exact component={Search} />
+      <Route path='/favourites' component={Favourites} />
     </Switch>
   </Provider>
 
