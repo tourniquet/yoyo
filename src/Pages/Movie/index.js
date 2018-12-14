@@ -1,5 +1,11 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import styled from 'styled-components'
+
+const Image = styled.img`
+  float: left;
+  margin-right: 10px;
+`
 
 const mapStateToProps = state => ({
   movie: state.movieReducer.movie
@@ -26,9 +32,19 @@ class MoviePage extends Component {
   }
 
   render () {
+    const { movie } = this.props
+
     return (
-      <div>
-        <h2>{this.props.movie.title}</h2>
+      <div className='jumbotron jumbotron-fluid'>
+        <div className='container'>
+          <h1 className='display-4'>{movie.title}</h1>
+          <p className='lead'>
+            { movie.poster_path &&
+              <Image src={`http://image.tmdb.org/t/p/w185/${movie.poster_path}`} />
+            }
+            {movie.overview}
+          </p>
+        </div>
       </div>
     )
   }

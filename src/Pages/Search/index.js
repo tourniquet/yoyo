@@ -1,13 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import styled from 'styled-components'
-
-// components
-import Button from '../../components/Button/'
-
-const StyledListItem = styled.li`
-  list-style-type: none;
-`
+// import {  } from 'react-icons/io'
 
 const mapStateToProps = state => ({
   query: state.searchReducer.query,
@@ -57,34 +50,43 @@ const Search = ({ dispatch, movies, query }) => {
 
   return (
     <div>
-      <input
-        type='search'
-        value={query}
-        onChange={event => dispatch(setQuery(event))}
-        onKeyDown={event => (event.keyCode === 13 && event.target.value) ? requestData() : null}
-      />
+      <div className='input-group mb-3'>
+        <input
+          className='form-control'
+          onChange={event => dispatch(setQuery(event))}
+          onKeyDown={event => (event.keyCode === 13 && event.target.value) ? requestData() : null}
+          placeholder='Movie title'
+          type='search'
+          value={query}
+        />
+        <div className='input-group-append'>
+          <button
+            className='btn btn-outline-secondary'
+            onClick={requestData}
+            type='button'
+          >
+            Search
+          </button>
+        </div>
+      </div>
 
-      <Button
-        onClick={requestData}
-      >
-        Search
-      </Button>
-
-      <ul>
+      <ul className='list-group list-group-flush'>
         { movies &&
           movies.map(movie => (
-            <StyledListItem
+            <li
+              className='list-group-item'
               key={movie.id}
             >
-              <Button
+              <span
+                class='oi'
+                data-glyph='x'
                 onClick={() => switchFavouriteStatus(movie)}
-              >
-                S
-              </Button>
-              <h4>
+              />
+
+              <a href={`/movie/${movie.id}`}>
                 {movie.title}
-              </h4>
-            </StyledListItem>
+              </a>
+            </li>
           ))
         }
       </ul>

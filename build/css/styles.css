@@ -1,0 +1,19 @@
+.container {
+  margin-top: 100px;
+}
+
+li.list-group-item {
+  align-items: center;
+  display: flex;
+  list-style-type: none;
+}
+
+.oi {
+  cursor: pointer;
+  font-size: 8px;
+  margin-right: 5px;
+}
+
+.jumbotron > .container {
+  overflow: hidden;
+}
