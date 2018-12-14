@@ -1,5 +1,4 @@
 import React from 'react'
-import fetch from 'node-fetch'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
 
@@ -24,7 +23,7 @@ const Search = ({ dispatch, movies, query }) => {
   const requestData = () => {
     const url = `https://api.themoviedb.org/3/search/movie?api_key=4cb1eeab94f45affe2536f2c684a5c9e&query=${query}`
 
-    fetch(url)
+    window.fetch(url)
       .then(res => res.json())
       .then(result => dispatch(setItem(result)))
       .catch(error => console.error(error))
@@ -36,9 +35,10 @@ const Search = ({ dispatch, movies, query }) => {
   })
 
   const switchFavouriteStatus = movie => {
-    const favouriteMovies = JSON.parse(window.localStorage.getItem('favourites')) || []
+    const favouriteMovies = JSON.parse(window.localStorage.getItem('favourites'))
+    if (!favouriteMovies) window.localStorage.setItem('favourites', JSON.stringify([]))
 
-    if (favouriteMovies.length) {
+    if (favouriteMovies) {
       const existingMovie = favouriteMovies.filter(item => item.id === movie.id)
 
       if (!existingMovie.length) {
@@ -48,9 +48,10 @@ const Search = ({ dispatch, movies, query }) => {
 
       if (existingMovie.length) {
         const newFavouriteMoviesList = favouriteMovies.filter(item => item.id !== existingMovie[0].id)
-        console.log(newFavouriteMoviesList)
         window.localStorage.setItem('favourites', JSON.stringify(newFavouriteMoviesList))
       }
+    } else {
+      window.localStorage.setItem('favourites', JSON.stringify([movie]))
     }
   }
 

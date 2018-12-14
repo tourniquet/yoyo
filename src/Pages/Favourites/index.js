@@ -28,7 +28,7 @@ class Favourites extends Component {
           this.props.favourites.map(movie =>
             <li key={movie.id}>
               <a
-                href={`https://api.themoviedb.org/3/movie/${movie.id}?api_key=4cb1eeab94f45affe2536f2c684a5c9e`}
+                href={`/movie/${movie.id}`}
               >
                 {movie.title}
               </a>

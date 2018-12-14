@@ -5,17 +5,20 @@ import { Provider } from 'react-redux'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 
 // components
-import Search from './Pages/Search/'
 import Favourites from './Pages/Favourites/'
+import MoviePage from './Pages/Movie/'
+import Search from './Pages/Search/'
 
 // reducers
 import itemsReducer from './reducers/itemsReducer'
 import favouriteReducer from './reducers/favouritesReducer'
+import movieReducer from './reducers/movieReducer'
 import searchReducer from './reducers/searchReducer'
 
 const combineReducer = combineReducers({
   itemsReducer,
   favouriteReducer,
+  movieReducer,
   searchReducer
 })
 
@@ -29,6 +32,7 @@ const App = () =>
     <Switch>
       <Route path='/' exact component={Search} />
       <Route path='/favourites' component={Favourites} />
+      <Route path='/movie/:id(\d+)' component={MoviePage} />
     </Switch>
   </Provider>
 
