@@ -1,10 +1,13 @@
 import React from 'react'
 import { connect } from 'react-redux'
-// import {  } from 'react-icons/io'
+
+// components
+import ToggleFavourite from '../../Components/ToggleFavourite'
 
 const mapStateToProps = state => ({
-  query: state.searchReducer.query,
-  movies: state.itemsReducer.movies
+  favourites: state.favouritesReducer.favourites,
+  movies: state.moviesReducer.movies,
+  query: state.searchReducer.query
 })
 
 const Search = ({ dispatch, movies, query }) => {
@@ -18,38 +21,31 @@ const Search = ({ dispatch, movies, query }) => {
 
     window.fetch(url)
       .then(res => res.json())
-      .then(result => dispatch(setItem(result)))
+      .then(result => dispatch(fetchMovies(result)))
       .catch(error => console.error(error))
   }
 
-  const setItem = data => ({
-    type: 'FETCH_ITEMS',
-    value: data
+  const fetchMovies = data => ({
+    type: 'FETCH_MOVIES',
+    results: data.results
   })
-
-  const switchFavouriteStatus = movie => {
-    const favouriteMovies = JSON.parse(window.localStorage.getItem('favourites'))
-    if (!favouriteMovies) window.localStorage.setItem('favourites', JSON.stringify([]))
-
-    if (favouriteMovies) {
-      const existingMovie = favouriteMovies.filter(item => item.id === movie.id)
-
-      if (!existingMovie.length) {
-        favouriteMovies.push(movie)
-        window.localStorage.setItem('favourites', JSON.stringify(favouriteMovies))
-      }
-
-      if (existingMovie.length) {
-        const newFavouriteMoviesList = favouriteMovies.filter(item => item.id !== existingMovie[0].id)
-        window.localStorage.setItem('favourites', JSON.stringify(newFavouriteMoviesList))
-      }
-    } else {
-      window.localStorage.setItem('favourites', JSON.stringify([movie]))
-    }
-  }
 
   return (
     <div>
+      <nav aria-label='breadcrumb'>
+        <ol class='breadcrumb'>
+          <li class='breadcrumb-item active'>
+            Home
+          </li>
+          <li
+            class='breadcrumb-item'
+            aria-current='page'
+          >
+            <a href='/favourites'>Favourites</a>
+          </li>
+        </ol>
+      </nav>
+
       <div className='input-group mb-3'>
         <input
           className='form-control'
@@ -77,11 +73,7 @@ const Search = ({ dispatch, movies, query }) => {
               className='list-group-item'
               key={movie.id}
             >
-              <span
-                class='oi'
-                data-glyph='x'
-                onClick={() => switchFavouriteStatus(movie)}
-              />
+              <ToggleFavourite movie={movie} />
 
               <a href={`/movie/${movie.id}`}>
                 {movie.title}

@@ -10,15 +10,15 @@ import MoviePage from './Pages/Movie/'
 import Search from './Pages/Search/'
 
 // reducers
-import itemsReducer from './reducers/itemsReducer'
-import favouriteReducer from './reducers/favouritesReducer'
+import favouritesReducer from './reducers/favouritesReducer'
+import moviesReducer from './reducers/moviesReducer'
 import movieReducer from './reducers/movieReducer'
 import searchReducer from './reducers/searchReducer'
 
 const combineReducer = combineReducers({
-  itemsReducer,
-  favouriteReducer,
+  favouritesReducer,
   movieReducer,
+  moviesReducer,
   searchReducer
 })
 

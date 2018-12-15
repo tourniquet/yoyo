@@ -35,15 +35,31 @@ class MoviePage extends Component {
     const { movie } = this.props
 
     return (
-      <div className='jumbotron jumbotron-fluid'>
-        <div className='container'>
-          <h1 className='display-4'>{movie.title}</h1>
-          <p className='lead'>
-            { movie.poster_path &&
-              <Image src={`http://image.tmdb.org/t/p/w185/${movie.poster_path}`} />
-            }
-            {movie.overview}
-          </p>
+      <div>
+        <nav aria-label='breadcrumb'>
+          <ol class='breadcrumb'>
+            <li class='breadcrumb-item active'>
+              <a href='/'>Home</a>
+            </li>
+            <li
+              class='breadcrumb-item active'
+              aria-current='page'
+            >
+              { movie.title }
+            </li>
+          </ol>
+        </nav>
+
+        <div className='jumbotron jumbotron-fluid'>
+          <div className='container'>
+            <h1 className='display-4'>{movie.title}</h1>
+            <p className='lead'>
+              { movie.poster_path &&
+                <Image src={`http://image.tmdb.org/t/p/w185/${movie.poster_path}`} />
+              }
+              {movie.overview}
+            </p>
+          </div>
         </div>
       </div>
     )

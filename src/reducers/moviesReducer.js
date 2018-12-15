@@ -1,12 +1,12 @@
 const initialState = {
-  movies: ''
+  movies: []
 }
 
-const itemsReducer = (state = initialState, action) => {
+const moviesReducer = (state = initialState, action) => {
   switch (action.type) {
-    case 'FETCH_ITEMS':
+    case 'FETCH_MOVIES':
       return Object.assign({}, state, {
-        movies: action.value.results
+        movies: action.results
       })
     case 'SWITCH_FAVOURITE_STATUS':
       return Object.assign({}, state, {
@@ -19,4 +19,4 @@ const itemsReducer = (state = initialState, action) => {
   }
 }
 
-export default itemsReducer
+export default moviesReducer

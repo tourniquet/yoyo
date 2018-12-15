@@ -1,8 +1,11 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
+// components
+import ToggleFavourite from '../../Components/ToggleFavourite'
+
 const mapStateToProps = state => ({
-  favourites: state.favouriteReducer.favourites
+  favourites: state.favouritesReducer.favourites
 })
 
 class Favourites extends Component {
@@ -23,19 +26,38 @@ class Favourites extends Component {
 
   render () {
     return (
-      <ul>
-        { this.props.favourites &&
-          this.props.favourites.map(movie =>
-            <li key={movie.id}>
-              <a
-                href={`/movie/${movie.id}`}
-              >
-                {movie.title}
-              </a>
+      <div>
+        <nav aria-label='breadcrumb'>
+          <ol class='breadcrumb'>
+            <li class='breadcrumb-item active'>
+              <a href='/'>Home</a>
             </li>
-          )
-        }
-      </ul>
+            <li
+              class='breadcrumb-item active'
+              aria-current='page'
+            >
+              Favourites
+            </li>
+          </ol>
+        </nav>
+
+        <ul className='list-group list-group-flush'>
+          { this.props.favourites &&
+            this.props.favourites.map(movie =>
+              <li
+                className='list-group-item'
+                key={movie.id}
+              >
+                <ToggleFavourite movie={movie} />
+
+                <a href={`/movie/${movie.id}`}>
+                  {movie.title}
+                </a>
+              </li>
+            )
+          }
+        </ul>
+      </div>
     )
   }
 }

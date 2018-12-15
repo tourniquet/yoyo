@@ -2,7 +2,7 @@ const initialState = {
   favourites: []
 }
 
-const favouriteReducer = (state = initialState, action) => {
+const favouritesReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'GET_FAVOURITE_MOVIES':
       return Object.assign({}, state, {
@@ -13,4 +13,4 @@ const favouriteReducer = (state = initialState, action) => {
   }
 }
 
-export default favouriteReducer
+export default favouritesReducer
