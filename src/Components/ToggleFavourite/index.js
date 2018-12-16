@@ -1,11 +1,23 @@
 import React from 'react'
+import { connect } from 'react-redux'
 
-const ToggleFavourite = ({ movie }) => {
-  const switchFavouriteStatus = movie => {
+const mapStateToProps = state => ({
+  favourites: state.favouritesReducer.favourites
+})
+
+const ToggleFavourite = ({ className, dispatch, glyph, movie }) => {
+  const dispatchAction = favouriteMovies => ({
+    type: 'SET_FAVOURITE_MOVIES',
+    favouriteMovies
+  })
+
+  const toggleFavouriteStatus = movie => {
     const favouriteMovies = JSON.parse(window.localStorage.getItem('favourites'))
+    // if the webpage is accessed for the first time, we need to create a new record in localStorage
     if (!favouriteMovies) window.localStorage.setItem('favourites', JSON.stringify([]))
 
     if (favouriteMovies) {
+      // checking if movie is already in favourites list
       const existingMovie = favouriteMovies.filter(item => item.id === movie.id)
 
       if (!existingMovie.length) {
@@ -14,8 +26,11 @@ const ToggleFavourite = ({ movie }) => {
       }
 
       if (existingMovie.length) {
+        // if movie is already in favourite list, then we remove it
         const newFavouriteMoviesList = favouriteMovies.filter(item => item.id !== existingMovie[0].id)
         window.localStorage.setItem('favourites', JSON.stringify(newFavouriteMoviesList))
+
+        dispatch(dispatchAction(newFavouriteMoviesList))
       }
     } else {
       window.localStorage.setItem('favourites', JSON.stringify([movie]))
@@ -24,11 +39,11 @@ const ToggleFavourite = ({ movie }) => {
 
   return (
     <span
-      class='oi'
-      data-glyph='x'
-      onClick={() => switchFavouriteStatus(movie)}
+      className={`oi ${className}`}
+      data-glyph={glyph}
+      onClick={() => toggleFavouriteStatus(movie)}
     />
   )
 }
 
-export default ToggleFavourite
+export default connect(mapStateToProps)(ToggleFavourite)

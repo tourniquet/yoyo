@@ -73,7 +73,10 @@ const Search = ({ dispatch, movies, query }) => {
               className='list-group-item'
               key={movie.id}
             >
-              <ToggleFavourite movie={movie} />
+              <ToggleFavourite
+                glyph='plus'
+                movie={movie}
+              />
 
               <a href={`/movie/${movie.id}`}>
                 {movie.title}

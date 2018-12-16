@@ -15,7 +15,7 @@ class Favourites extends Component {
     if (!favouriteMovies) window.localStorage.setItem('favourites', JSON.stringify([]))
 
     return {
-      type: 'GET_FAVOURITE_MOVIES',
+      type: 'SET_FAVOURITE_MOVIES',
       favouriteMovies
     }
   }
@@ -25,6 +25,8 @@ class Favourites extends Component {
   }
 
   render () {
+    const { favourites } = this.props
+
     return (
       <div>
         <nav aria-label='breadcrumb'>
@@ -42,13 +44,17 @@ class Favourites extends Component {
         </nav>
 
         <ul className='list-group list-group-flush'>
-          { this.props.favourites &&
-            this.props.favourites.map(movie =>
+          { favourites &&
+            favourites.map(movie =>
               <li
                 className='list-group-item'
                 key={movie.id}
               >
-                <ToggleFavourite movie={movie} />
+                <ToggleFavourite
+                  className='favourite'
+                  glyph='x'
+                  movie={movie}
+                />
 
                 <a href={`/movie/${movie.id}`}>
                   {movie.title}
