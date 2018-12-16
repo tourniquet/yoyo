@@ -23,6 +23,9 @@ const ToggleFavourite = ({ className, dispatch, glyph, movie }) => {
       if (!existingMovie.length) {
         favouriteMovies.push(movie)
         window.localStorage.setItem('favourites', JSON.stringify(favouriteMovies))
+
+        // using this dispatch to update and rerender view after a movie is added to favourites list
+        dispatch(dispatchAction(favouriteMovies))
       }
 
       if (existingMovie.length) {

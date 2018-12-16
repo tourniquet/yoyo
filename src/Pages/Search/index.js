@@ -30,6 +30,9 @@ const Search = ({ dispatch, movies, query }) => {
     results: data.results
   })
 
+  // fetch favourite movie from localStorage to check if search contains some of them
+  const favouriteMovies = JSON.parse(window.localStorage.getItem('favourites')) || []
+
   return (
     <div>
       <nav aria-label='breadcrumb'>
@@ -73,10 +76,23 @@ const Search = ({ dispatch, movies, query }) => {
               className='list-group-item'
               key={movie.id}
             >
-              <ToggleFavourite
-                glyph='plus'
-                movie={movie}
-              />
+              {/* checking if movie is already in favourite list */}
+              { favouriteMovies.findIndex(item => item.id === movie.id) > -1
+                ? (
+                  // if movie is already favourited, then 'X' (remove) icon will be rendered
+                  <ToggleFavourite
+                    className='favourite'
+                    glyph='x'
+                    movie={movie}
+                  />
+                ) : (
+                  // otherwise, a '+' (add) icon will be rendered
+                  <ToggleFavourite
+                    glyph='plus'
+                    movie={movie}
+                  />
+                )
+              }
 
               <a href={`/movie/${movie.id}`}>
                 {movie.title}
